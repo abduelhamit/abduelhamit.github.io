@@ -1,8 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <title>Test</title>
   </head>
-  <body></body>
+  <body>
+    <button id="test">Test</button>
+    <script>
+      async function createFileInSelectedDirectory() {
+        // show the directory picker
+        const dirHandle = await window.showDirectoryPicker();
+
+        // create a new file in the selected directory
+        const fileHandle = await dirHandle.getFileHandle("newFile.txt", {
+          create: true,
+        });
+
+        // get a writable stream to write data to the new file
+        const writable = await fileHandle.createWritable();
+
+        // write some data to the new file
+        await writable.write("Hello, world!");
+
+        // close the writable stream
+        await writable.close();
+      }
+
+      document
+        .getElementById("test")
+        .addEventListener("click", createFileInSelectedDirectory);
+    </script>
+  </body>
 </html>
